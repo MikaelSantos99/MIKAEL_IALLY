@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2E3324">
+<title>Ially & Mikael — 18.12.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- MÚSICA DE FUNDO -->
+<audio id="bg-music" loop preload="auto">
+  <source src="musica/romance-violino.mp3" type="audio/mpeg">
+  Seu navegador não suporta áudio.
+</audio>
+
+<!-- CONTEÚDO PRINCIPAL DO SITE -->
+<main class="site wrap" id="site">
+  <div class="bg-watermark"></div>
+  <div class="progress"><i id="progressBar"></i></div>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+  <div id="sparkles-container" style="position:fixed;inset:0;pointer-events:none;z-index:1;"></div>
+
+  <!-- SVG DEFS (Pétalas caindo) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="petalGrad" cx="30%" cy="30%" r="80%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="70%" stop-color="#F7F8FA"/>
+        <stop offset="100%" stop-color="#E6E8EA"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <div class="lang" aria-label="Idioma">
+    <button class="active" data-lang="pt">PT</button><button data-lang="en">EN</button>
+  </div>
+  <button class="sound" id="sound" aria-label="Tocar música" title="Tocar / pausar música">♪</button>
+
+  <!-- A CARTA -->
+  <section class="intro-section" id="intro-screen">
+    
+    <div class="intro-bg" aria-hidden="true"></div>
+
+    <div style="position:absolute; inset:0; z-index:50; cursor:pointer;" onclick="iniciarMusica()"></div>
+
+    <div class="envelope-wrapper">
+      <div class="env-back"></div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="smallcaps">JUNTOS COM NOSSAS FAMÍLIAS</div>
+          <h1>Ially <span class="amp">&</span><br>Mikael</h1>
+          
+          <div class="invite" style="margin-top: 20px;">CONVIDAM VOCÊ PARA CELEBRAR O NOSSO CASAMENTO</div>
+          <div class="smallcaps">DEZEMBRO</div>
+          <div class="day">18</div>
+          <div class="date">2026</div>
+          <div class="place">Santuário do Bom Jesus da Lapa</div>
+          <div class="smallcaps" style="margin-top:5px">BOM JESUS DA LAPA · BA</div>
+        </div>
+      </div>
+
+      <div class="photo-deck" aria-hidden="true">
+        <div class="photo-item"><img src="fotos/foto1.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+        <div class="photo-item"><img src="fotos/foto2.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+        <div class="photo-item"><img src="fotos/foto3.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+        <div class="photo-item"><img src="fotos/foto4.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+        <div class="photo-item"><img src="fotos/foto5.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+        <div class="photo-item"><img src="fotos/foto6.jpg" alt="" loading="eager" onerror="this.parentElement.classList.add('photo-fallback');this.remove()"></div>
+      </div>
+
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="seal"></div>
+    </div>
+  </section>
+
+  <!-- CONTAGEM -->
+  <section class="section count-section" id="count">
+    <div class="reveal">
+      <h2 data-pt="Contagem regressiva" data-en="Countdown">Contagem regressiva<span class="underline"></span></h2>
+      <div class="sub">18 · 12 · 2026</div>
+      <div class="tile-frame">
+        <div class="big-number" id="bigDays">00</div><div class="smallcaps" data-pt="dias" data-en="days">dias</div>
+        <div class="units">
+          <div class="unit"><b id="days">00</b><span data-pt="Dias" data-en="Days">Dias</span></div>
+          <div class="unit"><b id="hours">00</b><span data-pt="Horas" data-en="Hours">Horas</span></div>
+          <div class="unit"><b id="minutes">00</b><span data-pt="Min" data-en="Min">Min</span></div>
+          <div class="unit"><b id="seconds">00</b><span data-pt="Seg" data-en="Sec">Seg</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTÓRIA -->
+  <section class="section story">
+    <div class="reveal">
+      <h2 data-pt="Nossa história" data-en="Our story">Nossa história<span class="underline"></span></h2>
+      <p data-pt="Entre encontros, viagens, planos e sonhos, descobrimos que a melhor parte da vida é caminhar juntos. Agora queremos celebrar esse novo capítulo ao lado de quem faz parte da nossa história." data-en="Between meetings, journeys, plans and dreams, we discovered that the best part of life is walking together. Now we want to celebrate this new chapter with the people who are part of our story.">Entre encontros, viagens, planos e sonhos, descobrimos que a melhor parte da vida é caminhar juntos. Agora queremos celebrar esse novo capítulo ao lado de quem faz parte da nossa história.</p>
+      <div class="script">Ially & Mikael</div>
+    </div>
+  </section>
+
+  <!-- LOCAL -->
+  <section class="section dark">
+    <div class="ornate reveal">
+      <div class="smallcaps" data-pt="A celebração" data-en="The celebration">A celebração</div>
+      <h2 data-pt="Santuário do Bom Jesus da Lapa" data-en="Sanctuary of Bom Jesus da Lapa">Santuário do Bom Jesus da Lapa<span class="underline"></span></h2>
+      <div class="venue-name">18 · 12 · 2026 · 16h</div>
+      <p>Praça da Bandeira, 108<br>Bom Jesus da Lapa · Bahia</p>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Santu%C3%A1rio+do+Bom+Jesus+da+Lapa" target="_blank" rel="noopener" data-pt="Ver no mapa" data-en="View on map">Ver no mapa</a>
+    </div>
+  </section>
+
+  <!-- TRAJE -->
+  <section class="section dress">
+    <div class="reveal">
+      <h2 data-pt="Traje" data-en="Dress code">Traje<span class="underline"></span></h2>
+      <div class="sub" data-pt="Esporte fino / social" data-en="Cocktail / formal">Esporte fino / social</div>
+      <p data-pt="Escolha algo elegante, leve e confortável. Sugerimos tons naturais, rosados, verdes e azuis suaves." data-en="Choose something elegant, light and comfortable. We suggest natural, blush, green and soft blue tones.">Escolha algo elegante, leve e confortável. Sugerimos tons naturais, rosados, verdes e azuis suaves.</p>
+      <div class="palette">
+        <span class="swatch" style="background:#FDFCF9"></span>
+        <span class="swatch" style="background:#D8D2C4"></span>
+        <span class="swatch" style="background:#5A6349"></span>
+        <span class="swatch" style="background:#D9C5B6"></span>
+        <span class="swatch" style="background:#A2B08E"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP E PRESENTES -->
+  <section class="section rsvp" id="rsvp">
+    <div class="reveal">
+      <h2 data-pt="Confirme sua presença" data-en="RSVP">Confirme sua presença<span class="underline"></span></h2>
+      <div class="sub" data-pt="Até 25 de novembro de 2026" data-en="By November 25, 2026">Até 25 de novembro de 2026</div>
+      
+      <!-- FORMULÁRIO COM ENVIO VIA FORMSUBMIT -->
+      <form class="rsvp-box" id="rsvpForm" action="https://formsubmit.co/laurindomikael@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Nova confirmação de presença - Casamento Ially & Mikael">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="field"><label data-pt="Nome completo" data-en="Full name">Nome completo</label><input required name="nome" autocomplete="name"></div>
+        <div class="field"><label data-pt="Você estará conosco?" data-en="Will you join us?">Você estará conosco?</label><select required name="presenca"><option value="">Selecione</option><option>Sim, estarei presente</option><option>Infelizmente não poderei ir</option></select></div>
+        <div class="field"><label data-pt="Número de convidados" data-en="Number of guests">Número de convidados</label><input type="number" min="1" max="10" value="1" name="convidados"></div>
+        <div class="field"><label data-pt="Mensagem (opcional)" data-en="Message (optional)">Mensagem (opcional)</label><input name="mensagem" placeholder="Deixe um recado para os noivos..."></div>
+        <button class="submit" type="submit" data-pt="Enviar confirmação por E-mail" data-en="Send RSVP via E-mail">Enviar confirmação por E-mail</button>
+      </form>
+      <div class="rsvp-success" id="rsvpSuccess"></div>
+
+      <!-- ÁREA DE PRESENTES COM PIX -->
+      <div class="gift-section reveal">
+        <h3 data-pt="Lista de Presentes" data-en="Gift Registry">Lista de Presentes</h3>
+        <p data-pt="Sua presença é o nosso maior presente. Mas se desejar nos mimar, deixamos nossa chave Pix abaixo com muito carinho!" data-en="Your presence is our greatest gift. But if you wish to pamper us, we leave our Pix key below with love!">Sua presença é o nosso maior presente. Mas se desejar nos mimar, deixamos nossa chave Pix abaixo com muito carinho!</p>
+        
+        <div class="pix-card">
+          <div class="key-label">Chave Pix (E-mail)</div>
+          <div class="key-value" id="pixKey">casamento.iallyemikael@gmail.com</div>
+          <button class="copy-btn" onclick="copiarPix()" id="copyBtn">Copiar Chave Pix</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-script script">Ially & Mikael</div>
+    <div class="footer-date">18 · 12 · 2026 · Bom Jesus da Lapa</div>
+  </footer>
+</main>
+
+<script src="js/script.js"></script>
+</body>
+</html>
