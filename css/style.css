@@ -64,7 +64,6 @@ a{text-decoration:none}
   z-index:2;
 }
 
-/* 🌸 FUNDO DE FLORES (Orquídeas SVG) */
 .intro-bg {
   position: absolute;
   inset: 0;
@@ -209,7 +208,7 @@ a{text-decoration:none}
 }
 .card-content .amp{font-size:.64em;font-style:italic;color:var(--gold);}
 .card-content .invite{
-  margin:5px 0 6px!important;
+  margin:5px 0 6px;
   max-width:92%;
   font-family:Montserrat,sans-serif;
   font-size:5.25px;
@@ -412,6 +411,106 @@ a{text-decoration:none}
 .story .script{font-size:44px;margin-top:25px;color:var(--green);opacity:0;transform:translateY(12px);transition:opacity 1.2s ease .6s,transform 1.2s ease .6s}
 .story .reveal.in .script{opacity:1;transform:none}
 
+/* ---------- COVERFLOW CARROSSEL ---------- */
+.coverflow-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 50px auto 0;
+  padding-bottom: 50px;
+}
+.coverflow {
+  position: relative;
+  width: 100%;
+  height: 380px; /* Altura do palco */
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coverflow-item {
+  position: absolute;
+  width: 220px;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, z-index 0s;
+  background: #ccc;
+  cursor: pointer;
+}
+.coverflow-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Classe aplicada via JS para saber quem é o ativo */
+.coverflow-item.active {
+  z-index: 10;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+}
+
+/* Setas */
+.cf-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: var(--ink);
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.2s;
+}
+.cf-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-50%) scale(1.05);
+}
+.cf-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.cf-prev { left: 5px; }
+.cf-next { right: 5px; }
+
+/* Bolinhas (dots) */
+.cf-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 20;
+}
+.cf-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ccc;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.cf-dots span.active {
+  background: var(--green);
+  transform: scale(1.3);
+}
+
+@media(max-width:560px){
+  .coverflow { height: 320px; }
+  .coverflow-item { width: 170px; height: 240px; }
+  .cf-btn { width: 36px; height: 36px; }
+  .cf-btn svg { width: 18px; height: 18px; }
+}
+
 /* ---------- LOCAL ---------- */
 .dark{background:var(--green2);color:var(--paper)}
 .dark h2,.dark p{color:var(--paper)}
@@ -420,36 +519,44 @@ a{text-decoration:none}
 .ornate:before{top:-20px;left:16px}
 .ornate:after{bottom:-20px;right:16px;transform:rotate(180deg)}
 .venue-name{font-size:34px;margin:18px 0 10px; color:var(--gold-light);}
-.btn{display:inline-block;margin-top:28px;border:1px solid var(--gold);padding:12px 26px;font-family:Montserrat,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;position:relative;overflow:hidden;transition:color .4s ease; color:var(--gold); cursor:pointer;}
+.btn{display:inline-block;margin-top:28px;border:1px solid var(--gold);padding:12px 26px;font-family:Montserrat,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;position:relative;overflow:hidden;transition:color .4s ease; color:var(--gold); cursor:pointer; z-index: 1;}
 .btn::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .5s cubic-bezier(.4,0,.2,1);z-index:-1}
 .btn:hover::before{transform:translateY(0)}
 .btn:hover{color:var(--green2)}
 
-/* ---------- TRAJE ---------- */
-.dress{background:var(--paper);padding-bottom:110px}
-.palette{display:flex;justify-content:center;gap:14px;margin:32px 0}
-.swatch{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.1);transform:scale(0);transition:transform .55s cubic-bezier(.34,1.56,.64,1)}
-.reveal.in .swatch{transform:scale(1)}
-.reveal.in .swatch:nth-child(1){transition-delay:.35s}
-.reveal.in .swatch:nth-child(2){transition-delay:.45s}
-.reveal.in .swatch:nth-child(3){transition-delay:.55s}
-.reveal.in .swatch:nth-child(4){transition-delay:.65s}
-.reveal.in .swatch:nth-child(5){transition-delay:.75s}
-
 /* ---------- RSVP E PRESENTES (PIX) ---------- */
 .rsvp{background:var(--paper-dark);padding-bottom:120px}
 .rsvp-box{width:min(94%,480px);margin:35px auto 0;padding:40px 30px;border:1px solid rgba(90,99,73,.2);position:relative;background:#fff; box-shadow:var(--shadow);}
-.field{display:grid;gap:8px;text-align:left;margin-bottom:20px}
+.rsvp-text{font-size:18px !important;line-height:1.7;color:#4a524d;margin:0 0 26px;}
+.rsvp-form { text-align: left; }
+.field{display:grid;gap:8px;margin-bottom:18px;}
 .field label{font-family:Montserrat,sans-serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--green)}
-.field input,.field select,.field textarea{width:100%;border:0;border-bottom:1px solid #ccc;background:transparent;padding:10px 2px;outline:none;color:var(--ink);transition:border-color .3s; font-size:16px;}
+.field input,.field select,.field textarea{width:100%;border:0;border-bottom:1px solid #ccc;background:transparent;padding:10px 2px;outline:none;color:var(--ink);transition:border-color .3s; font-size:16px; border-radius: 0; -webkit-appearance: none; appearance: none;}
+.field select { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%235A6349" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 5px center; background-size: 12px; cursor: pointer; }
 .field input:focus,.field select:focus,.field textarea:focus{border-bottom-color:var(--sage)}
-.submit{width:100%;margin-top:15px;padding:15px;border:1px solid var(--green);background:transparent;color:var(--green);font-family:Montserrat,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .4s}
-.submit::before{content:"";position:absolute;inset:0;background:var(--green);transform:translateY(101%);transition:transform .5s cubic-bezier(.4,0,.2,1);z-index:-1}
-.submit:hover::before{transform:translateY(0)}
-.submit:hover{color:#fff}
-.submit:disabled{opacity:.6;cursor:not-allowed}
-.rsvp-success{display:none;margin-top:20px;padding:20px;text-align:center;background:var(--paper);border:1px dashed var(--sage);font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--green2)}
-.rsvp-success.show{display:block;animation:fadeUp .6s ease}
+
+.whatsapp-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  padding:16px 20px;
+  background:#25D366;
+  color:#fff;
+  font-family:Montserrat,sans-serif;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  border-radius:4px;
+  box-shadow:0 8px 22px rgba(37,211,102,.32);
+  transition:background .3s, transform .25s, box-shadow .3s;
+  cursor:pointer;
+  font-weight:600;
+}
+.whatsapp-btn:hover{background:#1ebe5b; transform:translateY(-2px); box-shadow:0 12px 26px rgba(37,211,102,.42);}
+.whatsapp-btn:active{transform:translateY(0);}
+.whatsapp-icon{width:22px;height:22px;flex:0 0 auto;}
 
 .gift-section { margin-top:60px; padding-top:50px; border-top:1px solid rgba(90,99,73,0.1); }
 .gift-section h3 { font-weight:300; font-size:36px; margin:0 0 10px; color:var(--green2); }
