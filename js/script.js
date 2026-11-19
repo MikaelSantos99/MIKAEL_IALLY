@@ -4,9 +4,10 @@ const soundBtn = document.getElementById('sound');
 const introScreen = document.getElementById('intro-screen');
 
 let isPlaying = false;
+let userPausedMusic = false;
 
 function iniciarMusica() {
-  if (!isPlaying) {
+  if (!isPlaying && !userPausedMusic) {
     bgMusic.volume = 0.6;
     bgMusic.play().then(() => {
       isPlaying = true;
@@ -25,7 +26,13 @@ function stopMusic() {
 
 soundBtn.addEventListener('click', (event) => {
   event.stopPropagation();
-  if(isPlaying){ stopMusic(); } else { iniciarMusica(); }
+  if(isPlaying){
+    userPausedMusic = true;
+    stopMusic();
+  } else {
+    userPausedMusic = false;
+    iniciarMusica();
+  }
 });
 
 document.addEventListener('pointerdown', function startMusic() {
@@ -138,48 +145,193 @@ function copiarPix() {
   });
 }
 
-/* ================= RSVP COM ENVIO VIA E-MAIL (FormSubmit) ================= */
-const form = document.getElementById('rsvpForm');
-const successBox = document.getElementById('rsvpSuccess');
+/* ================= CARROSSEL COVERFLOW ================= */
+(function initCoverflow() {
+  const wrapper = document.querySelector('.coverflow');
+  const items = Array.from(document.querySelectorAll('.coverflow-item'));
+  const prevBtn = document.getElementById('cfPrev');
+  const nextBtn = document.getElementById('cfNext');
+  const dotsWrap = document.getElementById('cfDots');
+  
+  if (!items.length) return;
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault(); 
-  
-  const submitBtn = form.querySelector('.submit');
-  const originalText = submitBtn.textContent;
-  submitBtn.disabled = true;
-  submitBtn.textContent = document.documentElement.lang !== 'en' ? 'Enviando...' : 'Sending...';
-  
-  const formData = new FormData(form);
-  const name = formData.get('nome') || '';
-  const pt = document.documentElement.lang !== 'en';
-  
-  try {
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+  let currentIndex = 0;
+  const total = items.length;
+  let autoplayId = null;
+
+  // Cria as bolinhas
+  items.forEach((_, i) => {
+    const dot = document.createElement('span');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  // Posiciona os itens baseados na distância do centro
+  function render() {
+    items.forEach((item, index) => {
+      let offset = index - currentIndex;
+      
+      // Se estiver no final, faz o loop para a esquerda (opcional)
+      if (offset < -Math.floor(total / 2)) offset += total;
+      if (offset > Math.floor(total / 2)) offset -= total;
+
+      const absOffset = Math.abs(offset);
+      
+      // Configurações visuais: posição X, escala, opacidade e Z-index
+      const translateX = offset * 90; // Distância horizontal
+      const scale = 1 - (absOffset * 0.15); // Fica menor conforme se afasta
+      const opacity = 1 - (absOffset * 0.3); // Fica transparente conforme se afasta
+      const zIndex = 10 - absOffset;
+      const rotateY = offset * -15; // Efeito 3D
+
+      item.style.transform = `translateX(${translateX}px) scale(${scale}) rotateY(${rotateY}deg)`;
+      item.style.opacity = opacity < 0 ? 0 : opacity;
+      item.style.zIndex = zIndex;
+      
+      item.classList.toggle('active', offset === 0);
     });
-    
-    if (response.ok) {
-      successBox.textContent = pt
-        ? `Obrigado, ${name}! Sua confirmação foi enviada para os noivos. 💛`
-        : `Thank you, ${name}! Your confirmation has been sent to the couple. 💛`;
-      successBox.classList.add('show');
-      form.style.display = 'none';
-      burstPetals();
-      successBox.scrollIntoView({behavior:'smooth', block:'center'});
-    } else {
-      throw new Error('Erro no envio');
-    }
-  } catch (error) {
-    submitBtn.disabled = false;
-    submitBtn.textContent = originalText;
-    alert(pt
-      ? 'Ocorreu um erro ao enviar. Verifique sua internet e tente novamente.'
-      : 'An error occurred while sending. Check your internet and try again.');
+
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
   }
-});
+
+  function goTo(index) {
+    currentIndex = (index + total) % total;
+    render();
+    restartAutoplay();
+  }
+
+  function next() { goTo(currentIndex + 1); }
+  function prev() { goTo(currentIndex - 1); }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayId = setInterval(() => {
+      if (!document.hidden) {
+        currentIndex = (currentIndex + 1) % total;
+        render();
+      }
+    }, 3500);
+  }
+
+  function stopAutoplay() {
+    if (autoplayId) clearInterval(autoplayId);
+  }
+
+  function restartAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  // Eventos de clique
+  nextBtn.addEventListener('click', (e) => { e.preventDefault(); next(); });
+  prevBtn.addEventListener('click', (e) => { e.preventDefault(); prev(); });
+
+  // Permite clicar na imagem lateral para centralizá-la
+  items.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      if (index !== currentIndex) goTo(index);
+    });
+  });
+
+  // Swipe (touch)
+  let startX = null;
+  let isDragging = false;
+
+  wrapper.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    stopAutoplay();
+  }, { passive: true });
+
+  wrapper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - startX;
+    if (Math.abs(dx) > 10) e.preventDefault(); // Evita scroll lateral
+  }, { passive: false });
+
+  wrapper.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    const endX = e.changedTouches[0].clientX;
+    const dx = endX - startX;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0) next();
+      else prev();
+    } else {
+      restartAutoplay();
+    }
+    isDragging = false;
+  });
+
+  // Pausa autoplay quando o carrossel não está visível
+  const visIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) startAutoplay();
+      else stopAutoplay();
+    });
+  }, { threshold: 0.15 });
+  visIO.observe(wrapper);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+
+  // Inicializa
+  render();
+})();
+
+/* ================= FORMULÁRIO RSVP WHATSAPP ================= */
+const rsvpForm = document.getElementById('rsvpForm');
+if (rsvpForm) {
+  rsvpForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById('rsvpNome').value.trim();
+    const presenca = document.getElementById('rsvpPresenca').value;
+    const pessoas = document.getElementById('rsvpPessoas').value;
+    const mensagem = document.getElementById('rsvpMensagem').value.trim();
+
+    // Número do WhatsApp com DDI (55) + DDD (61) + número
+    const numeroWhatsApp = "5561991115742";
+
+    // Monta o texto bonitinho
+    let texto = `*Confirmação de Presença - Casamento Ially & Mikael*\n\n`;
+    texto += `*Nome:* ${nome}\n`;
+    texto += `*Presença:* ${presenca}\n`;
+    
+    if (presenca.includes("Sim")) {
+      texto += `*Acompanhantes:* ${pessoas} pessoa(s)\n`;
+    }
+    
+    if (mensagem) {
+      texto += `*Recado:* ${mensagem}\n`;
+    }
+
+    const textoCodificado = encodeURIComponent(texto);
+    const url = `https://wa.me/${numeroWhatsApp}?text=${textoCodificado}`;
+
+    // Abre o WhatsApp em uma nova aba
+    window.open(url, '_blank');
+
+    // Limpa o formulário e dispara as pétalas
+    rsvpForm.reset();
+    burstPetals();
+
+    // Feedback visual opcional (pode ser um alert ou trocar o botão temporariamente)
+    const btn = rsvpForm.querySelector('button[type="submit"]');
+    const textoOriginal = btn.innerHTML;
+    btn.innerHTML = '<span>Enviado! Abrindo WhatsApp... 💛</span>';
+    btn.style.background = '#1ebe5b';
+    
+    setTimeout(() => {
+      btn.innerHTML = textoOriginal;
+      btn.style.background = '';
+    }, 3000);
+  });
+}
 
 /* ================= IDIOMA ================= */
 const langBtns = document.querySelectorAll('.lang button');
@@ -188,7 +340,14 @@ langBtns.forEach(btn=>btn.addEventListener('click',()=>{
   btn.classList.add('active');
   const l = btn.dataset.lang;
   document.documentElement.lang = l==='pt'?'pt-BR':'en';
-  document.querySelectorAll('[data-pt][data-en]').forEach(el=>el.textContent = el.dataset[l]);
+  
+  document.querySelectorAll('[data-pt][data-en]').forEach(el=>{
+    if(el.tagName === 'OPTION') {
+      el.textContent = el.dataset[l];
+    } else {
+      el.textContent = el.dataset[l];
+    }
+  });
 }));
 
 /* ================= PROGRESSO ================= */
