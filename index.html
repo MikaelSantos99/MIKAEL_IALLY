@@ -25,7 +25,7 @@
   <div class="petals" id="petals" aria-hidden="true"></div>
   <div id="sparkles-container" style="position:fixed;inset:0;pointer-events:none;z-index:1;"></div>
 
-  <!-- SVG DEFS (Pétalas caindo) -->
+  <!-- SVG DEFS -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <radialGradient id="petalGrad" cx="30%" cy="30%" r="80%">
@@ -97,12 +97,35 @@
     </div>
   </section>
 
-  <!-- HISTÓRIA -->
+  <!-- HISTÓRIA + CARROSSEL -->
   <section class="section story">
     <div class="reveal">
       <h2 data-pt="Nossa história" data-en="Our story">Nossa história<span class="underline"></span></h2>
       <p data-pt="Entre encontros, viagens, planos e sonhos, descobrimos que a melhor parte da vida é caminhar juntos. Agora queremos celebrar esse novo capítulo ao lado de quem faz parte da nossa história." data-en="Between meetings, journeys, plans and dreams, we discovered that the best part of life is walking together. Now we want to celebrate this new chapter with the people who are part of our story.">Entre encontros, viagens, planos e sonhos, descobrimos que a melhor parte da vida é caminhar juntos. Agora queremos celebrar esse novo capítulo ao lado de quem faz parte da nossa história.</p>
       <div class="script">Ially & Mikael</div>
+    </div>
+
+    <!-- CARROSSEL DE FOTOS -->
+    <div class="coverflow-wrapper reveal" aria-label="Galeria de fotos do casal">
+      <div class="coverflow" id="coverflow">
+        
+        <div class="coverflow-item"><img src="fotos/foto7.jpg" alt="Nossa História 1" loading="lazy"></div>
+        <div class="coverflow-item"><img src="fotos/foto8.jpg" alt="Nossa História 2" loading="lazy"></div>
+        <div class="coverflow-item"><img src="fotos/foto9.jpg" alt="Nossa História 3" loading="lazy"></div>
+        <div class="coverflow-item"><img src="fotos/foto10.jpg" alt="Nossa História 4" loading="lazy"></div>
+        <div class="coverflow-item"><img src="fotos/foto11.jpg" alt="Nossa História 5" loading="lazy"></div>
+        <div class="coverflow-item"><img src="fotos/foto12.jpg" alt="Nossa História 6" loading="lazy"></div>
+        
+      </div>
+      
+      <button class="cf-btn cf-prev" id="cfPrev" aria-label="Foto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button class="cf-btn cf-next" id="cfNext" aria-label="Próxima foto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      
+      <div class="cf-dots" id="cfDots" aria-label="Navegação do carrossel"></div>
     </div>
   </section>
 
@@ -117,51 +140,54 @@
     </div>
   </section>
 
-  <!-- TRAJE -->
-  <section class="section dress">
-    <div class="reveal">
-      <h2 data-pt="Traje" data-en="Dress code">Traje<span class="underline"></span></h2>
-      <div class="sub" data-pt="Esporte fino / social" data-en="Cocktail / formal">Esporte fino / social</div>
-      <p data-pt="Escolha algo elegante, leve e confortável. Sugerimos tons naturais, rosados, verdes e azuis suaves." data-en="Choose something elegant, light and comfortable. We suggest natural, blush, green and soft blue tones.">Escolha algo elegante, leve e confortável. Sugerimos tons naturais, rosados, verdes e azuis suaves.</p>
-      <div class="palette">
-        <span class="swatch" style="background:#435443"></span>
-        <span class="swatch" style="background:#717b5b"></span>
-        <span class="swatch" style="background:#be9c76"></span>
-        <span class="swatch" style="background:#dbc5a1"></span>
-        <span class="swatch" style="background:#dbc5a1"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- RSVP E PRESENTES -->
+  <!-- RSVP E PRESENTES (PIX) -->
   <section class="section rsvp" id="rsvp">
     <div class="reveal">
       <h2 data-pt="Confirme sua presença" data-en="RSVP">Confirme sua presença<span class="underline"></span></h2>
       <div class="sub" data-pt="Até 18 de dezembro de 2026" data-en="By December 18, 2026">Até 18 de dezembro de 2026</div>
-      
-      <!-- FORMULÁRIO COM ENVIO VIA FORMSUBMIT -->
-      <form class="rsvp-box" id="rsvpForm" action="https://formsubmit.co/laurindomikael@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Nova confirmação de presença - Casamento Ially & Mikael">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
 
-        <div class="field"><label data-pt="Nome completo" data-en="Full name">Nome completo</label><input required name="nome" autocomplete="name"></div>
-        <div class="field"><label data-pt="Você estará conosco?" data-en="Will you join us?">Você estará conosco?</label><select required name="presenca"><option value="">Selecione</option><option>Sim, estarei presente</option><option>Infelizmente não poderei ir</option></select></div>
-        <div class="field"><label data-pt="Número de convidados" data-en="Number of guests">Número de convidados</label><input type="number" min="1" max="10" value="1" name="convidados"></div>
-        <div class="field"><label data-pt="Mensagem (opcional)" data-en="Message (optional)">Mensagem (opcional)</label><input name="mensagem" placeholder="Deixe um recado para os noivos..."></div>
-        <button class="submit" type="submit" data-pt="Enviar confirmação por E-mail" data-en="Send RSVP via E-mail">Enviar confirmação por E-mail</button>
-      </form>
-      <div class="rsvp-success" id="rsvpSuccess"></div>
+      <div class="rsvp-box">
+        <p class="rsvp-text" data-pt="Será uma honra ter você ao nosso lado nesse dia tão especial! Preencha os dados abaixo e clique em enviar para confirmarmos sua presença pelo WhatsApp. 💛" data-en="It would be an honor to have you by our side on this special day! Fill in the details below and click send to confirm your presence via WhatsApp. 💛">Será uma honra ter você ao nosso lado nesse dia tão especial! Preencha os dados abaixo e clique em enviar para confirmarmos sua presença pelo WhatsApp. 💛</p>
+
+        <form id="rsvpForm" class="rsvp-form">
+          <div class="field">
+            <label data-pt="Nome completo" data-en="Full name">Nome completo</label>
+            <input type="text" id="rsvpNome" required placeholder="Seu nome...">
+          </div>
+          <div class="field">
+            <label data-pt="Você estará conosco?" data-en="Will you join us?">Você estará conosco?</label>
+            <select id="rsvpPresenca" required>
+              <option value="Sim, estarei presente!" data-pt="Sim, estarei presente!" data-en="Yes, I will be there!">Sim, estarei presente!</option>
+              <option value="Infelizmente não poderei ir" data-pt="Infelizmente não poderei ir" data-en="Unfortunately, I won't be able to make it">Infelizmente não poderei ir</option>
+            </select>
+          </div>
+          <div class="field">
+            <label data-pt="Quantidade de pessoas (incluindo você)" data-en="Number of guests (including you)">Quantidade de pessoas (incluindo você)</label>
+            <input type="number" id="rsvpPessoas" min="1" max="10" value="1" required>
+          </div>
+          <div class="field">
+            <label data-pt="Mensagem (opcional)" data-en="Message (optional)">Mensagem (opcional)</label>
+            <textarea id="rsvpMensagem" rows="2" placeholder="Deixe um recado para os noivos..."></textarea>
+          </div>
+          
+          <button type="submit" class="whatsapp-btn" style="margin-top: 10px; border: none;">
+            <svg class="whatsapp-icon" viewBox="0 0 32 32" aria-hidden="true">
+              <path fill="currentColor" d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.59 4.47 1.72 6.42L3.2 28.8l6.55-1.7a12.75 12.75 0 0 0 6.25 1.6h.01c7.06 0 12.8-5.74 12.8-12.8s-5.75-12.7-12.8-12.7zm7.5 18.17c-.31.87-1.81 1.66-2.49 1.72-.64.05-1.45.08-2.34-.15-.54-.14-1.24-.4-2.13-.78-3.75-1.62-6.2-5.39-6.39-5.64-.19-.25-1.53-2.04-1.53-3.89s.97-2.76 1.31-3.14c.34-.38.74-.47.99-.47.25 0 .49.002.71.013.23.008.53-.088.83.63.31.75 1.05 2.6 1.14 2.79.09.19.15.41.03.66-.12.25-.18.4-.37.62-.18.22-.39.49-.56.66-.19.19-.38.4-.16.78.22.38.97 1.6 2.08 2.59 1.43 1.28 2.64 1.67 3.02 1.86.38.19.6.16.82-.1.22-.25.94-1.09 1.19-1.47.25-.38.5-.31.84-.19.34.13 2.18 1.03 2.55 1.22.38.19.63.28.72.44.09.16.09.94-.22 1.81z"/>
+            </svg>
+            <span data-pt="Enviar pelo WhatsApp" data-en="Send via WhatsApp">Enviar pelo WhatsApp</span>
+          </button>
+        </form>
+      </div>
 
       <!-- ÁREA DE PRESENTES COM PIX -->
       <div class="gift-section reveal">
         <h3 data-pt="Lista de Presentes" data-en="Gift Registry">Lista de Presentes</h3>
         <p data-pt="Sua presença é o nosso maior presente. Mas se desejar nos mimar, deixamos nossa chave Pix abaixo com muito carinho!" data-en="Your presence is our greatest gift. But if you wish to pamper us, we leave our Pix key below with love!">Sua presença é o nosso maior presente. Mas se desejar nos mimar, deixamos nossa chave Pix abaixo com muito carinho!</p>
-        
+
         <div class="pix-card">
           <div class="key-label">Chave Pix (E-mail)</div>
           <div class="key-value" id="pixKey">mikaelool@hotmail.com</div>
-          <button class="copy-btn" onclick="copiarPix()" id="copyBtn">Copiar Chave Pix</button>
+          <button type="button" class="copy-btn" onclick="copiarPix()" id="copyBtn">Copiar Chave Pix</button>
         </div>
       </div>
     </div>
